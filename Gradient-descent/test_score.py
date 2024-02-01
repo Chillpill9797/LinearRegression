@@ -32,12 +32,20 @@ def gradient_descent(x, y):
     return m_curr, b_curr
 
 
+def normalize_data(data):
+    mean = np.mean(data)
+    std_dev = np.std(data)
+    normalized_data = (data - mean) / std_dev
+    return normalized_data, mean, std_dev
+
+
 if __name__ == "__main__":
     df = pd.read_csv("test_scores.csv")
     x = np.array(df.math)
     y = np.array(df.cs)
-    m, b = gradient_descent(x, y)
+    x_normalized, mean_x, std_dev_x = normalize_data(x)
+    y_normalized, mean_y, std_dev_y = normalize_data(y)
+    m, b = gradient_descent(x_normalized, y_normalized)
     print(f"Using gradient descent: Coef {m} Intercept {b}.")
-
     m_sklearn, b_sklearn = predict_using_sklean()
     print(f"Using sklearn: Coef {m_sklearn} Intercept {b_sklearn}")
